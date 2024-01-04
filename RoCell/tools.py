@@ -11,7 +11,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from model import AutoEncoder
+from RoCell import AutoEncoder
 
 
 def dim_reduction_ae(adata_ae):
