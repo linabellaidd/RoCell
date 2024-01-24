@@ -14,15 +14,14 @@ import torch.optim as optim
 from RoCell import AutoEncoder
 
 
-def dim_reduction_ae(adata_ae):
+def dim_reduction_ae(adata_ae, device: str):
     lr = 0.06
     decay_rate = 0.995
     batch_size = 64
     max_iter = 30
     n_neighbors = 20
     resolution = 1.2
-    cuda_num = 6
-    device = torch.device("cuda: {}".format(cuda_num))
+    device = torch.device(device)
     adata_X = adata_ae.X
     torch.manual_seed(3407)
     AE = AutoEncoder([adata_X.shape[1],64]).to(device)
@@ -95,7 +94,7 @@ def analytic_pearson_residuals(counts, theta):
     counts_sum1 = np.sum(counts, axis=1)
     counts_sum  = np.sum(counts) # pg
     mu = counts_sum1 @ counts_sum0 / counts_sum
-    z = (counts - mu) / np.sqrt(mu + np.power(mu,2)/theta)
+    z = (counts - mu) / np.sqrt(1e-10 + mu + np.power(mu,2)/theta)
     n = counts.shape[0]
     z[z >  np.sqrt(n)] =  np.sqrt(n)
     z[z < -np.sqrt(n)] = -np.sqrt(n)
@@ -178,6 +177,21 @@ def qc(adata,
         print('finished with', str(ncells_final), ' total cells and', str(ngenes_final), 'total genes')
         
         return adata
+
+def nb_fit(avg, var):
+    m = (var > avg) & (avg > 0)
+    x = np.log(avg[m])
+    y = np.log((var - avg)[m])
+    A = np.vstack([x, np.ones(len(x))]).T
+    a, b = np.linalg.lstsq(A, y, rcond=None)[0]
+    var_h = np.exp(np.log(avg + 1e-10) * a + b) + avg
+    var_h[avg == 0] = 0
+    return var_h
+
+def nb_p(avg, var):
+    p = avg/(var + 1e-10)
+    r = avg**2 / (var - avg + 1e-10)
+    return r, p
 
 
 def get_nb_parameter_df(batch_x,rbg):
