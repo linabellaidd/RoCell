@@ -1,6 +1,6 @@
 # RoCell
 
-Notebooks associated with the publication:
+These notebooks implement the algorithms associated with the publication:
 
 ## RoCell: An End-to-End Workflow for Single-Cell RNAseq Analysis
 
@@ -8,9 +8,9 @@ Guanya Yang, Jiawei Yan, Qing Zhang
 
 _Abstract:_ 
 
-These notebooks implement the algorithms and demonstrate how to apply to a common dataset.
+Single-cell RNA sequencing plays a crucial role in drug discovery by identifying elusive cell subpopulations, elucidating cell-specific gene expression signatures, and revealing novel cellular phenotypes, thereby enhancing our understanding of pathogenesis of complex diseases and facilitating the development of precision therapies. However, technical noise in scRNA-seq data, stemming from stochastic sampling, amplification bias, dropout events, batch effects, obscure the underlying cellular heterogeneity and introduce biases, all of which then aggravate the reliability and accuracy of downstream analysis. To eliminate the technical noise for better interrogating the intricate biological signals present in genes across distinct cell types, we propose an end-to-end AI solution termed as the Roche single cell RNA-seq platform, a comprehensive scRNA-seq data analysis workflow that seamlessly integrates all steps in scRNA-seq analysis, from quality control, to dimensionality reduction and cell clustering. Particularly, we built an autoencoder-based deep learning model to learn a compressed representation of the data. To reduce the bias from manual feature selection and errors in the batch effect removal step, we proposed to quantify the heterogeneity of gene expressions by a precise negative binomial model-based scoring algorithm, and select genes with higher heterogeneity score as the input to the model. To validate the effectiveness of our method, RoCell is benchmarked on multiple public datasets and shows superior accuracy compared to existing algorithms and remains robust across different types of datasets. Overall, our solution addresses the challenge of technical noise in scRNA-seq data analysis, providing a robust method for uncovering cellular heterogeneity and facilitating downstream analysis.
 
-** Usage
+### Usage:
 
 The __RoCell Workflow__ takes an `h5ad` file as the input, and also requires a few hyperparameters which we list below:
 
